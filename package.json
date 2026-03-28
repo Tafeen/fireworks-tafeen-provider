@@ -1,5 +1,5 @@
 {
-  "name": "fireworks-tafeen-provider",
+  "name": "@tafeen/fireworks-tafeen-provider",
   "version": "1.0.0",
   "description": "Fireworks AI provider wrapper for OpenCode 1.3.3+ with strict OpenAI-compatible sanitization",
   "main": "index.js",
