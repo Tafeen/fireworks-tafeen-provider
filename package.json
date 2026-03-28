@@ -1,0 +1,46 @@
+{
+  "name": "fireworks-tafeen-provider",
+  "version": "1.0.0",
+  "description": "Fireworks AI provider wrapper for OpenCode 1.3.3+ with strict OpenAI-compatible sanitization",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "keywords": [
+    "fireworks",
+    "ai",
+    "openai",
+    "opencode",
+    "provider",
+    "kimi",
+    "wrapper"
+  ],
+  "author": "Daniel (@vibe-coded)",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Daniel/f-k2.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Daniel/f-k2/issues"
+  },
+  "homepage": "https://github.com/Daniel/f-k2#readme",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "scripts": {
+    "lint": "eslint index.js",
+    "lint:fix": "eslint index.js --fix",
+    "test": "node index.js && echo '✓ Package loads successfully'"
+  },
+  "dependencies": {
+    "@ai-sdk/openai-compatible": "1.0.21"
+  },
+  "devDependencies": {
+    "eslint": "^9.0.0"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "README.md",
+    "LICENSE"
+  ]
+}
