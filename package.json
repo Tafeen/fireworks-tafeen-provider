@@ -1,6 +1,6 @@
 {
   "name": "@tafeen/fireworks-tafeen-provider",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Fireworks AI provider for OpenCode with field sanitization",
   "main": "index.js",
   "types": "index.d.ts",
