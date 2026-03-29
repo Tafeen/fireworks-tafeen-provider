@@ -2,49 +2,45 @@ name: Publish to NPM with Trusted Publishing
 
 on:
   release:
-    types: [ created ]
+    types: [created]
 
 jobs:
   publish:
     runs-on: ubuntu-latest
-    
-    # Required permissions for OIDC trusted publishing
+
     permissions:
       contents: read
-      id-token: write  # Required for OIDC token exchange
+      id-token: write
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: '22.x'  # Required for npm trusted publishing (>=22.14.0)
-        registry-url: 'https://registry.npmjs.org'
-        cache: 'npm'
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "22.x" # Required for npm trusted publishing (>=22.14.0)
+          registry-url: "https://registry.npmjs.org"
+          cache: "npm"
 
-    - name: Install dependencies
-      run: npm ci
+      - name: Install dependencies
+        run: npm ci
 
-    - name: Run linter
-      run: npm run lint
+      - name: Run linter
+        run: npm run lint
 
-    - name: Run tests
-      run: npm test
+      - name: Run tests
+        run: npm test
 
-    - name: Build (if present)
-      run: npm run build --if-present
+      - name: Build (if present)
+        run: npm run build --if-present
 
-    # Publish to NPM using OIDC token (no NPM_TOKEN needed!)
-    - name: Publish to NPM
-      run: npm publish --provenance
-      env:
-        # NODE_AUTH_TOKEN is NOT needed when using trusted publishing
-        # The npm CLI automatically uses the OIDC token from GitHub Actions
-        NPM_CONFIG_PROVENANCE: true
+      - name: Publish to NPM
+        run: npm publish --provenance
+        env:
+          NPM_CONFIG_PROVENANCE: true
 
-    - name: Verify publication
-      run: |
-        echo "Package published successfully with provenance"
-        npm view $(node -p "require('./package.json').name")@latest
+      - name: Verify publication
+        run: |
+          echo "Package published successfully with provenance"
+          npm view $(node -p "require('./package.json').name")@latest
