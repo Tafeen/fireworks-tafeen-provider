@@ -1,4 +1,4 @@
-name: Publish to NPM
+name: Publish to NPM with Trusted Publishing
 
 on:
   release:
@@ -7,17 +7,20 @@ on:
 jobs:
   publish:
     runs-on: ubuntu-latest
+    
+    # Required permissions for OIDC trusted publishing
     permissions:
       contents: read
-      id-token: write
+      id-token: write  # Required for OIDC token exchange
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout repository
+      uses: actions/checkout@v4
 
-    - name: Use Node.js
+    - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
-        node-version: '20.x'
+        node-version: '22.x'  # Required for npm trusted publishing (>=22.14.0)
         registry-url: 'https://registry.npmjs.org'
         cache: 'npm'
 
@@ -27,10 +30,21 @@ jobs:
     - name: Run linter
       run: npm run lint
 
-    - name: Test package load
+    - name: Run tests
       run: npm test
 
+    - name: Build (if present)
+      run: npm run build --if-present
+
+    # Publish to NPM using OIDC token (no NPM_TOKEN needed!)
     - name: Publish to NPM
-      run: npm publish --access public
+      run: npm publish --provenance
       env:
-        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        # NODE_AUTH_TOKEN is NOT needed when using trusted publishing
+        # The npm CLI automatically uses the OIDC token from GitHub Actions
+        NPM_CONFIG_PROVENANCE: true
+
+    - name: Verify publication
+      run: |
+        echo "Package published successfully with provenance"
+        npm view $(node -p "require('./package.json').name")@latest
